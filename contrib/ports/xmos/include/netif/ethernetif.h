@@ -39,7 +39,7 @@ int xcore_ethernetif_init(const uint8_t* mac_address_phy, const xtcp_ipconfig_t*
 void xcore_lwip_init_timers(uint32_t period[NUM_TIMEOUTS], uint32_t timeout[NUM_TIMEOUTS], uint32_t time_now);
 
 /* LwIP Ethernet packet input function */
-void ethernetif_input(const uint8_t buffer[], int32_t n_bytes);
+void ethernetif_input(const uint8_t buffer[], int32_t n_bytes, uint32_t timestamp);
 
 /* Wrapper for LwIP link notifications */
 void xcore_net_link_up(void);

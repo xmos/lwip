@@ -159,7 +159,20 @@
 
 // Custom data in pbuf to hold remote address for UDP recvfrom()
 #include "xtcp.h"
-#define LWIP_PBUF_CUSTOM_DATA xtcp_host_t remote;
-#define LWIP_PBUF_CUSTOM_DATA_INIT(p) p->remote.ipaddr[0] = 0; p->remote.ipaddr[1] = 0; p->remote.ipaddr[2] = 0; p->remote.ipaddr[3] = 0; p->remote.port_number = 0;
+#define LWIP_PBUF_CUSTOM_DATA         \
+  xtcp_host_t remote;                 \
+  unsigned timestamp;
+
+#define LWIP_PBUF_CUSTOM_DATA_INIT(p) \
+  p->remote.ipaddr[0] = 0;            \
+  p->remote.ipaddr[1] = 0;            \
+  p->remote.ipaddr[2] = 0;            \
+  p->remote.ipaddr[3] = 0;            \
+  p->remote.port_number = 0;          \
+  p->timestamp = 0;
+
+// this reuses the flag field to avoid adding an additional field;
+// care should be taken if lwIP adds additional flags
+#define PBUF_FLAG_TX_TIMESTAMP      0x80
 
 #endif /* __LWIPOPTS_H__ */
