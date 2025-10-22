@@ -162,12 +162,18 @@ static err_t xcore_ethernetif_linkoutput(struct netif *netif, struct pbuf *p) {
 
     n_bytes = 60;
     /* Start MAC transmit here */
-    xcore_netif_low_level_output(txbuf, n_bytes);
+    if (p->flags & PBUF_FLAG_TX_TIMESTAMP)
+      p->timestamp = xcore_netif_low_level_output_timed(txbuf, n_bytes);
+    else
+      xcore_netif_low_level_output(txbuf, n_bytes);
   } else {
     // NOTE: this is not expecting or setup to deal with pbuf chains
 
     /* Start MAC transmit here */
-    xcore_netif_low_level_output(p->payload, n_bytes);
+    if (p->flags & PBUF_FLAG_TX_TIMESTAMP)
+      p->timestamp = xcore_netif_low_level_output_timed(p->payload, n_bytes);
+    else
+      xcore_netif_low_level_output(p->payload, n_bytes);
   }
 
 #if ETH_PAD_SIZE
@@ -324,12 +330,14 @@ void xcore_timeout(xtcp_lwip_timeout_type timeout) {
  * interface.
  *
  */
-void ethernetif_input(const uint8_t buffer[], int32_t n_bytes) {
+void ethernetif_input(const uint8_t buffer[], int32_t n_bytes, uint32_t timestamp) {
   /* move received packet into a new pbuf */
   struct pbuf *p = xcore_net_low_level_input(buffer, n_bytes);
 
   /* if no packet could be read, silently ignore this */
   if (p != NULL) {
+    p->timestamp = timestamp;
+
     /* pass all packets to ethernet_input, which decides what packets it supports */
     if (xcore_netif.input(p, &xcore_netif) != ERR_OK) {
 

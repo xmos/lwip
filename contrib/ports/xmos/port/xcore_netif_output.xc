@@ -62,3 +62,17 @@ void xcore_netif_low_level_output(int buffer[], size_t n_bytes) {
     fail("xcore_netif_low_level_output: netif output interface not set.\n");
   }
 }
+
+uint32_t xcore_netif_low_level_output_timed(int buffer[], size_t n_bytes) {
+  if (xcore_netif_eth == XCORE_NETIF_ETH_TX) {
+    unsafe {
+      // TODO - Check whether ETHERNET_ALL_INTERFACES is correct when we support dual-PHY
+      return ((client interface ethernet_tx_if)xtcp_i_eth_tx).send_timed_packet((char *)buffer,
+                                                                                n_bytes,
+                                                                                ETHERNET_ALL_INTERFACES);
+    }
+  } else {
+    fail("xcore_netif_low_level_output: netif output interface not set.\n");
+    return 0;
+  }
+}

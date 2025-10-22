@@ -26,4 +26,6 @@ void xcore_netif_output_init(client ethernet_tx_if ?i_eth_tx, client mii_if ?i_m
  */
 void xcore_netif_low_level_output(int buffer[], size_t n_bytes);
 
+uint32_t xcore_netif_low_level_output_timed(int buffer[], size_t n_bytes);
+
 #endif /* __XCORE_NETIF_H__ */
