@@ -53,17 +53,35 @@
 #define MEMP_MEM_MALLOC             0   // Disable using malloc() for mem-pools
 #define MEM_ALIGNMENT               4
 #define MEM_SIZE                    16384
+#ifndef MEMP_NUM_PBUF
 #define MEMP_NUM_PBUF               16
+#endif
+#ifndef MEMP_NUM_UDP_PCB
 #define MEMP_NUM_UDP_PCB            4
+#endif
+#ifndef MEMP_NUM_TCP_PCB
 #define MEMP_NUM_TCP_PCB            5
+#endif
+#ifndef MEMP_NUM_TCP_PCB_LISTEN
 #define MEMP_NUM_TCP_PCB_LISTEN     8
+#endif
+#ifndef MEMP_NUM_TCP_SEG
 #define MEMP_NUM_TCP_SEG            16
+#endif
+#ifndef MEMP_NUM_REASSDATA
 #define MEMP_NUM_REASSDATA          5   // Ensure that MEMP_NUM_REASSDATA < IP_REASS_MAX_PBUFS
+#endif
+#ifndef MEMP_NUM_RAW_PCB
 #define MEMP_NUM_RAW_PCB            6
+#endif
+#ifndef MEMP_NUM_ARP_QUEUE
 #define MEMP_NUM_ARP_QUEUE          10
+#endif
 
 /* ---------- Pbuf options ---------- */
+#ifndef PBUF_POOL_SIZE
 #define PBUF_POOL_SIZE              16  // Ensure that PBUF_POOL_SIZE > IP_REASS_MAX_PBUFS
+#endif
 
 #define LWIP_WND_SCALE              0
 #define TCP_RCV_SCALE               0
@@ -74,7 +92,9 @@
 #define ARP_QUEUE_LEN               4
 
 /* ---------- IP options ---------- */
+#ifndef IP_REASS_MAX_PBUFS
 #define IP_REASS_MAX_PBUFS          10
+#endif
 #define IP_DEFAULT_TTL              255
 
 #define IP_FRAG                     0
